@@ -11,7 +11,7 @@ const randomFunc = {
     lower: getRandomLower,
     upper: getRandomUpper,
     number: getRandomNumber,
-    symbol: getRandomSymbol
+    symbol: getRandomSymbol,
 }
 
 generateEl.addEventListener('click', () => {
@@ -23,6 +23,45 @@ generateEl.addEventListener('click', () => {
 
     resultEl.innerText = generatePassword(hasLower,hasUpper, hasNumber, hasSymbole, length)
 })
+
+//copy
+clipboardEl.addEventListener('click', () => {
+    const textarea = document.createElement('textarea')
+    const password = resultEl.innerText
+
+    if(!password) {
+        return
+    }
+
+    textarea.value = password
+    document.body.appendChild(textarea)
+    textarea.select()
+    document.execCommand('copy')
+    textarea.remove()
+    alert('Copied')
+})
+
+//generate password function
+function generatePassword(lower, upper, number, symbol, length) {
+    let generatedPassword = ''
+
+    const typeCount = lower + upper + number + symbol
+    const typesArr = [{lower}, {upper}, {number}, {symbol}].filter(item => Object.values(item)[0])
+    
+    if(typeCount === 0) {
+        return ''
+    }
+
+    for(let i = 0; i < length; i += typeCount) {
+        typesArr.forEach(type => {
+            const funcName = Object.keys(type)[0]
+            generatedPassword += randomFunc[funcName]()
+        })
+    }
+
+    const finalPassword = generatedPassword.slice(0, length)
+    return finalPassword
+}
 
 // Generator functions
 
@@ -40,5 +79,5 @@ function getRandomNumber() {
 
 function getRandomSymbol() {
     const symbols = '!@#$%^&*(){}[]<>?/,.'
-    return symbols(Math.floor(Math.random) * symbols.length)
+    return symbols[Math.floor(Math.random() * symbols.length)]
 }

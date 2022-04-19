@@ -17,7 +17,26 @@ function showData(data) {
     
 }
 
+function showData(data) {
+    
+}
 
+
+
+
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const searchTerm = serch.value.trim()
+
+    if(!searchTerm) {
+        alert('Please type in a search term')
+    } else {
+        searchSongs(searchTerm)
+    }
+    
+})
 
 form.addEventListener('submit', (e) => {
     e.preventDefault()
